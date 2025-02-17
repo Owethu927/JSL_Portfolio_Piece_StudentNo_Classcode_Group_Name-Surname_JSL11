@@ -221,12 +221,30 @@ function addTask(event) {
 
 
 function toggleSidebar(show) {
- 
+  // Get sidebar and toggle button elements and set their display property
+    document.getElementById("side-bar-div").style.display = show ? "block" : "none";
+    document.getElementById("show-side-bar-btn").style.display = show ? "none" : "block";
+
+ // Add event listeners to toggle sidebar visibility
+// Clicking 'hide-side-bar-btn' hides the sidebar   
+document.getElementById("hide-side-bar-btn").addEventListener("click", () => toggleSidebar(false));
+// Clicking 'show-side-bar-btn' shows the sidebar
+document.getElementById("show-side-bar-btn").addEventListener("click", () => toggleSidebar(true));
+
 }
 
 function toggleTheme() {
- 
+  const body = document.body;
+  const isDarkMode = body.classList.toggle("dark-theme");
+  const isLightMode = body.classList.toggle("light-theme");
+  
+  // Change theme based on the current mode
+  document.getElementById("icon-dark").style.display = isDarkMode ? "none" : "block";
+  document.getElementById("icon-light").style.display = isLightMode ? "block" : "none";
 }
+
+document.getElementById("switch").addEventListener("change", toggleTheme);
+
 
 
 
