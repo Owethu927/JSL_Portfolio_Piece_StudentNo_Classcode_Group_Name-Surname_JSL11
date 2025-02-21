@@ -1,5 +1,5 @@
 // TASK: import helper functions from utils
-import { getTasks, createNewTask, patchTask, putTask, deleteTask} from "./utils/taskFunctions.js";
+import { getTasks,  createNewTask, patchTask, putTask, deleteTask} from "./utils/taskFunctions.js";
 // TASK: import initialData
 import { initialData } from "./initialData.js";
 
@@ -11,11 +11,12 @@ import { initialData } from "./initialData.js";
 function initializeData() {
   if (!localStorage.getItem('tasks')) {
     localStorage.setItem('tasks', JSON.stringify(initialData)); 
-    localStorage.setItem('showSideBar', 'true')
+    localStorage.setItem('showSideBar', 'true');
   } else {
     console.log('Data already exists in localStorage');
   }
 }
+
 
 // TASK: Get elements from the DOM
 const elements = {
@@ -30,6 +31,9 @@ const elements = {
   editTaskModal: document.querySelector('.edit-task-modal-window'),
   modalWindow: document.getElementById('new-task-modal-window'),
   filterDiv: document.getElementById('filterDiv'),
+  editTaskTitleInput: document.getElementById('edit-task-title-input'),
+  editTaskDescInput: document.getElementById('edit-task-desc-input'),
+  editSelectStatus: document.getElementById('edit-select-status'),
 
 }
 
@@ -241,9 +245,17 @@ function toggleTheme() {
   // Change theme based on the current mode
   document.getElementById("icon-dark").style.display = isDarkMode ? "none" : "block";
   document.getElementById("icon-light").style.display = isLightMode ? "block" : "none";
+// save the theme preference to local storage
+if (isDarkMode) {
+  localStorage.getItem("theme", "dark")
+} else {
+  localStorage.getItem("theme", "light")
+}
 }
 
 document.getElementById("switch").addEventListener("change", toggleTheme);
+
+
 
 
 
@@ -260,26 +272,38 @@ function openEditTaskModal(task) {
 
 
   // Call saveTaskChanges upon click of Save Changes button
- 
+  saveChangesBtn.onclick = () => saveTaskChanges(task.id);
 
   // Delete task using a helper function and close the task modal
-
+  deleteChangesBtn.addEventListener('click', () => {
+    deleteTask(task.id);
+    toggleModal(false, elements.editTaskModal); // Close the edit task modal
+    refreshTasksUI(); // Refresh the task list to reflect the deletion
+  });
 
   toggleModal(true, elements.editTaskModal); // Show the edit task modal
 }
 
 function saveTaskChanges(taskId) {
   // Get new user inputs
-  
+  const editTitle = elements.editTaskTitleInput.value;
+  const editDescription = elements.editTaskDescInput.value;
+  const editStatus = elements.editSelectStatus.value;
 
   // Create an object with the updated task details
+  const updatedTask = {
+    id: taskId,
+    title: editTitle,
+    description: editDescription,
+    status: editStatus,
 
+  }
 
   // Update task using a hlper functoin
- 
+ patchTask(taskId, editTitle);
 
   // Close the modal and refresh the UI to reflect the changes
-
+toggleModal(true, elements.editTaskDescInput);
   refreshTasksUI();
 }
 
