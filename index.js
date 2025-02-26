@@ -118,7 +118,7 @@ function refreshTasksUI() {
 // Styles the active board by adding an active class
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
-  document.querySelectorAll('.board-btn').foreach(btn => { 
+  document.querySelectorAll('.board-btn').forEach(btn => { 
     
     if(btn.textContent === boardName) {
       btn.classList.add('active') 
@@ -245,21 +245,10 @@ function toggleTheme() {
   // Change theme based on the current mode
   document.getElementById("icon-dark").style.display = isDarkMode ? "none" : "block";
   document.getElementById("icon-light").style.display = isLightMode ? "block" : "none";
-// save the theme preference to local storage
-if (isDarkMode) {
-  localStorage.getItem("theme", "dark")
-} else {
-  localStorage.getItem("theme", "light")
-}
 }
 
 document.getElementById("switch").addEventListener("change", toggleTheme);
-
-
-
-
-
-
+ 
 function openEditTaskModal(task) {
   // Set task details in modal inputs
   document.getElementById('edit-task-title-input').value  = task.title;
@@ -300,7 +289,7 @@ function saveTaskChanges(taskId) {
   }
 
   // Update task using a hlper functoin
- patchTask(taskId, editTitle);
+ patchTask(taskId, updatedTask);
 
   // Close the modal and refresh the UI to reflect the changes
 toggleModal(true, elements.editTaskDescInput);
